@@ -1,3 +1,4 @@
+//arian edited this
 void setup() {
   // initialize digital pin LED_BUILTIN as an output.
   pinMode(10, INPUT);
@@ -15,4 +16,5 @@ void loop() {
   else{
     digitalWrite(8, LOW);
   }
+
 }
