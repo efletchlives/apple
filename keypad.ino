@@ -1,19 +1,23 @@
 #include <Keypad.h>
 
-char keys[4][3] = {
+const byte rows = 4;
+const byte cols = 3;
+char keys[rows][cols] = {
     {'1','2','3'},
     {'4','5','6'},
     {'7','8','9'},
     {'*','0','#'}
 };
 
-int rowPins[4] = {2,3,4,5};
-int colPins[3] = {6,7,8};
+byte rowPins[rows] = {7,2,3,5};
+byte colPins[cols] = {6,8,4};
 
-Keypad keypad = Keypad(makeKeymap(keys), rowPins, colPins, 4, 3);
+Keypad keypad = Keypad(makeKeymap(keys), rowPins, colPins, rows, cols);
 
 String enteredCode = "";
 const String correctCode = "1234";
+int numCount = 0;
+String code = "";
 
 void setup() {
   Serial.begin(9600);
@@ -23,14 +27,17 @@ void setup() {
 void loop() {
     if(numCount == 4){
         if(code == correctCode){
-            return 1;
+          Serial.println("Good job!");
+          // return 1;
         }
         else{
-            return 0; // idk change to whatever correct and incorrect will be
+          Serial.println("DIE DIE DIE");
+          // return 0; // idk change to whatever correct and incorrect will be
         }
     }
+
     char key = keypad.getKey();
-    String code = ""
+
     if (key) { // if a key is pressed
         Serial.print("You pressed: ");
         Serial.println(key);
@@ -38,15 +45,9 @@ void loop() {
         // Check if key is numeric (0-9)
         if (key >= '0' && key <= '9') {
         numCount++;
-        code += key
+        code += key;
         Serial.print("Number count: ");
         Serial.println(numCount);
-        }
-
-        // Optional: reset counter with '*'
-        if (key == '*') {
-        numCount = 0;
-        Serial.println("Counter reset.");
         }
     }
 }
