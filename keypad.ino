@@ -15,13 +15,21 @@ byte colPins[cols] = {6,8,4};
 Keypad keypad = Keypad(makeKeymap(keys), rowPins, colPins, rows, cols);
 
 String enteredCode = "";
-const String correctCode = "1234";
+
+// random keypad code
+String num1 = String(random(0,9));
+String num2 = String(random(0,9));
+String num3 = String(random(0,9));
+String num4 = String(random(0,9));
+const String correctCode = num1 + num2 + num3 + num4;
 int numCount = 0;
 String code = "";
 
 void setup() {
   Serial.begin(9600);
-  Serial.println("Enter 4-digit code:");
+  Serial.print("Enter 4-digit code ");
+  Serial.print(correctCode);
+  Serial.print(":\n");
 }
 
 void loop() {
