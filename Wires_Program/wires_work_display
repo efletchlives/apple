@@ -1,12 +1,18 @@
 #include <Wire.h>
 #include "ADS1X15.h"
 #include "Voltage_Value.h"
+#include <Adafruit_SSD1306.h>
+
+#define OLED_RESET 4
+Adafruit_SSD1306 Display1(OLED_RESET);
+Adafruit_SSD1306 Display2(OLED_RESET);
 
 ADS1115 ADS(0x48);
 
-RangedInt RED(7000, 8000, 7500);
-RangedInt GREEN(12000, 13000, 12500);
-RangedInt BLACK(17000, 18000, 17500);
+RangedInt WIRE_RED(7000, 8000, 7500);
+RangedInt WIRE_GREEN(12000, 13000, 12500);
+RangedInt WIRE_BLACK(17000, 18000, 17500);
+RangedInt expected_value;
 
 // Track which wires and pins have been used
 bool wireUsed[3] = {false, false, false};  // RED, GREEN, BLACK
@@ -15,61 +21,120 @@ bool pinUsed[3] = {false, false, false};   // A0, A1, A2
 int currentWire = -1;  // Which wire to place next
 int currentPin = -1;   // Which pin to place it in
 
-void setup() {
+int counter = 0;
+
+void setup()   {
+
   Serial.begin(9600);
+//Display Code
+  Display1.begin(SSD1306_SWITCHCAPVCC, 0x3C);
+  Display1.clearDisplay();
+  Display1.display();
+
+  Display2.begin(SSD1306_SWITCHCAPVCC, 0x3D);
+  Display2.clearDisplay();
+  Display2.display();
+//Wire code
   Wire.begin();
   ADS.begin();
   ADS.setGain(0);
   ADS.setDataRate(7);
   ADS.setMode(1);
-
   randomSeed(analogRead(0));
+  pickNextWireAndPin();  //Function created to make sure we are not using the same wires over and over again
   
-  pickNextWireAndPin();  // Pick the first wire/pin combination
 }
 
-void pickNextWireAndPin() {
-  // Pick a random unused wire
-  do {
-    currentWire = random(0, 3);
-  } while (wireUsed[currentWire]);
-  wireUsed[currentWire] = true;
-  
-  // Pick a random unused pin
-  do {
-    currentPin = random(0, 3);
-  } while (pinUsed[currentPin]);
-  pinUsed[currentPin] = true;
-  
-  // Tell the user what to do
-  String wireName = (currentWire == 0) ? "RED" : (currentWire == 1) ? "GREEN" : "BLACK";
-  Serial.print("Connect the ");
-  Serial.print(wireName);
-  Serial.print(" wire to pin A");
-  Serial.println(currentPin);
-}
 
-void loop() {
-  // Read the voltage from the current pin
-  int reading = ADS.readADC(currentPin);
-  
-  // Get the expected RangedInt for the current wire
-  RangedInt expected = (currentWire == 0) ? RED : (currentWire == 1) ? GREEN : BLACK;
-  
-  // Check if the correct wire is connected
-  if (expected.isInRange(reading)) {
-    Serial.println("✅ CORRECT!");
-    
-    // Check if all wires are done
-    if (wireUsed[0] && wireUsed[1] && wireUsed[2]) {
-      Serial.println("🎉 ALL WIRES CONNECTED! Puzzle complete!");
-      while (true) {}  // Halt forever
-    } else {
-      delay(1000);
-      pickNextWireAndPin();  // Move to next wire
-    }
-  } else {
-    Serial.println("❌ Wrong wire, try again...");
-    delay(1000);
+void pickNextWireAndPin()
+{
+  do{
+    currentWire = random(0,3); //Picking one of the random 3 wires
+  } 
+  while (wireUsed[currentWire]); //Pick a random wire while the wireUsed remains false
+  wireUsed[currentWire] = true; //Set thes wire we used to true so we know not to use it again
+
+  do{
+    currentPin = random(0,3); //Picking one of the random 3 pins
   }
+  while(pinUsed[currentPin]); //Picking a random pin while the pinUsed remains false
+  pinUsed[currentPin] = true; //Sets the pin we used to true to we know not to use it again
+
+  if(currentWire == 0)
+  {
+    Serial.print("Connect the Orange Wire to pin A");
+    Serial.print(currentPin);
+  }
+  else if(currentWire == 1)
+  {
+    Serial.print("Connect the Yellow Wire to Pin A");
+    Serial.print(currentPin);
+  }
+  else
+  {
+    Serial.print("Connect to the White Wire to Pin A");
+    Serial.print(currentPin);
+  }
+}
+void loop() {
+  
+    int reading = ADS.readADC(currentPin);
+
+    //Picking the corresponding value to the respective wire
+    if(currentWire == 0)
+    {
+       expected_value = WIRE_BLACK;
+    }
+    else if(currentWire == 1)
+    {
+      expected_value = WIRE_GREEN;
+    }
+    else 
+    {
+       expected_value = WIRE_RED;
+    }
+
+
+    if(expected_value.isInRange(reading))
+    {
+      Serial.println("HOLY SHIT YOU GOT IT RIGHT");
+
+      if(wireUsed[0] && wireUsed[1] && wireUsed[2])
+      {
+        Serial.println("U DONE BOI");
+        counter++;
+         Display2.clearDisplay();
+         Display2.setTextSize(2);
+         Display2.setTextColor(WHITE, BLACK);
+        Display2.setCursor(0, 0);
+        Display2.println(counter);
+         Display2.display();
+         
+         for(int i = 0 ; i < 3 ; i++)
+         {
+          wireUsed[i] = false;
+          pinUsed[i] = false;
+         }
+
+         Serial.println("START A NEW ROUND WOOOOO");
+
+         pickNextWireAndPin();
+      }
+      else
+      {
+        delay(1000);
+        pickNextWireAndPin();
+      }
+    }
+    else{
+      
+      delay(1000);
+    } 
+    Display1.clearDisplay();
+    Display1.setTextSize(1);
+    Display1.setTextColor(WHITE, BLACK);
+    Display1.setCursor(0, 0 );
+    Display1.println("Connect the wires");
+    Display1.display();
+
 }
