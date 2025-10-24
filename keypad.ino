@@ -1,4 +1,9 @@
 #include <Keypad.h>
+#include <Adafruit_SSD1306.h>
+#include <Wire.h>
+
+#define OLED_RESET 4
+Adafruit_SSD1306 display1(128,64,&Wire,OLED_RESET);
 
 const byte rows = 4;
 const byte cols = 3;
@@ -27,6 +32,21 @@ String code = "";
 
 void setup() {
   Serial.begin(9600);
+  Wire.begin();
+  display1.begin(SSD1306_SWITCHCAPVCC, 0x3C);
+
+  display1.clearDisplay();
+  display1.setTextSize(1.5);
+  display1.setTextColor(SSD1306_WHITE);
+  display1.setCursor(10,25);
+  display1.println(F("Enter 4-digit code: "));
+  display1.print("       ");
+  display1.print(correctCode);
+
+  display1.display();
+
+
+
   Serial.print("Enter 4-digit code ");
   Serial.print(correctCode);
   Serial.print(":\n");
@@ -35,11 +55,15 @@ void setup() {
 void loop() {
     if(numCount == 4){
         if(code == correctCode){
-          Serial.println("Good job!");
+          display1.clearDisplay();
+          display1.println(F("Good job!"));
+          display1.display();
           // return 1;
         }
         else{
-          Serial.println("DIE DIE DIE");
+          display1.clearDisplay();
+          display1.println(F("DIE DIE DIE"));
+          display1.display();
           // return 0; // idk change to whatever correct and incorrect will be
         }
     }
