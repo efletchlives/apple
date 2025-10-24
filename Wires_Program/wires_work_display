@@ -1,0 +1,75 @@
+#include <Wire.h>
+#include "ADS1X15.h"
+#include "Voltage_Value.h"
+
+ADS1115 ADS(0x48);
+
+RangedInt RED(7000, 8000, 7500);
+RangedInt GREEN(12000, 13000, 12500);
+RangedInt BLACK(17000, 18000, 17500);
+
+// Track which wires and pins have been used
+bool wireUsed[3] = {false, false, false};  // RED, GREEN, BLACK
+bool pinUsed[3] = {false, false, false};   // A0, A1, A2
+
+int currentWire = -1;  // Which wire to place next
+int currentPin = -1;   // Which pin to place it in
+
+void setup() {
+  Serial.begin(9600);
+  Wire.begin();
+  ADS.begin();
+  ADS.setGain(0);
+  ADS.setDataRate(7);
+  ADS.setMode(1);
+
+  randomSeed(analogRead(0));
+  
+  pickNextWireAndPin();  // Pick the first wire/pin combination
+}
+
+void pickNextWireAndPin() {
+  // Pick a random unused wire
+  do {
+    currentWire = random(0, 3);
+  } while (wireUsed[currentWire]);
+  wireUsed[currentWire] = true;
+  
+  // Pick a random unused pin
+  do {
+    currentPin = random(0, 3);
+  } while (pinUsed[currentPin]);
+  pinUsed[currentPin] = true;
+  
+  // Tell the user what to do
+  String wireName = (currentWire == 0) ? "RED" : (currentWire == 1) ? "GREEN" : "BLACK";
+  Serial.print("Connect the ");
+  Serial.print(wireName);
+  Serial.print(" wire to pin A");
+  Serial.println(currentPin);
+}
+
+void loop() {
+  // Read the voltage from the current pin
+  int reading = ADS.readADC(currentPin);
+  
+  // Get the expected RangedInt for the current wire
+  RangedInt expected = (currentWire == 0) ? RED : (currentWire == 1) ? GREEN : BLACK;
+  
+  // Check if the correct wire is connected
+  if (expected.isInRange(reading)) {
+    Serial.println("✅ CORRECT!");
+    
+    // Check if all wires are done
+    if (wireUsed[0] && wireUsed[1] && wireUsed[2]) {
+      Serial.println("🎉 ALL WIRES CONNECTED! Puzzle complete!");
+      while (true) {}  // Halt forever
+    } else {
+      delay(1000);
+      pickNextWireAndPin();  // Move to next wire
+    }
+  } else {
+    Serial.println("❌ Wrong wire, try again...");
+    delay(1000);
+  }
+}
