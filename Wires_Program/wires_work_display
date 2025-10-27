@@ -9,9 +9,9 @@ Adafruit_SSD1306 Display2(OLED_RESET);
 
 ADS1115 ADS(0x48);
 
-RangedInt WIRE_RED(7000, 8000, 7500);
-RangedInt WIRE_GREEN(12000, 13000, 12500);
-RangedInt WIRE_BLACK(17000, 18000, 17500);
+RangedInt WIRE_RED(14000, 15700, 14800); // on breadboard: BLACK
+RangedInt WIRE_GREEN(11500, 12500, 12000); // on breadboard: GREEN
+RangedInt WIRE_BLACK(17000, 18000, 17500); // on breadboard: YELLOW
 RangedInt expected_value;
 
 // Track which wires and pins have been used
@@ -62,17 +62,17 @@ void pickNextWireAndPin()
 
   if(currentWire == 0)
   {
-    Serial.print("Connect the Orange Wire to pin A");
+    Serial.print("Connect the Black Wire to pin A");
     Serial.print(currentPin);
   }
   else if(currentWire == 1)
   {
-    Serial.print("Connect the Yellow Wire to Pin A");
+    Serial.print("Connect the Green Wire to Pin A");
     Serial.print(currentPin);
   }
   else
   {
-    Serial.print("Connect to the White Wire to Pin A");
+    Serial.print("Connect to the Red Wire to Pin A");
     Serial.print(currentPin);
   }
 }
