@@ -1,0 +1,53 @@
+Add component: Footprint Not Found HARWIN_M20-9990246
+Added Component: Designator=Display 1(WURTH_61300411121)
+Add component (AddParameter): Name = "Check_prices"; Value = "https://www.snapeda.com/parts/61300411121/W%25C3%25BCrth+Elektronik+Midcom/view-part/?ref=eda"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "MF"; Value = "Würth Elektronik"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "MP"; Value = "61300411121"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Package"; Value = "None"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "SnapEDA_Link"; Value = "https://www.snapeda.com/parts/61300411121/W%25C3%25BCrth+Elektronik+Midcom/view-part/?ref=snap"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = ""; VariantName = "[No Variations]"
+Added Component: Designator=Display 2(WURTH_61300411121)
+Add component (AddParameter): Name = "Check_prices"; Value = "https://www.snapeda.com/parts/61300411121/W%25C3%25BCrth+Elektronik+Midcom/view-part/?ref=eda"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "MF"; Value = "Würth Elektronik"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "MP"; Value = "61300411121"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Package"; Value = "None"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "SnapEDA_Link"; Value = "https://www.snapeda.com/parts/61300411121/W%25C3%25BCrth+Elektronik+Midcom/view-part/?ref=snap"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = ""; VariantName = "[No Variations]"
+Added Component: Designator=Display 3(WURTH_61300411121)
+Add component (AddParameter): Name = "Check_prices"; Value = "https://www.snapeda.com/parts/61300411121/W%25C3%25BCrth+Elektronik+Midcom/view-part/?ref=eda"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "MF"; Value = "Würth Elektronik"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "MP"; Value = "61300411121"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Package"; Value = "None"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "SnapEDA_Link"; Value = "https://www.snapeda.com/parts/61300411121/W%25C3%25BCrth+Elektronik+Midcom/view-part/?ref=snap"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = ""; VariantName = "[No Variations]"
+Added Component: Designator=Display 4(WURTH_61300411121)
+Add component (AddParameter): Name = "Check_prices"; Value = "https://www.snapeda.com/parts/61300411121/W%25C3%25BCrth+Elektronik+Midcom/view-part/?ref=eda"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "MF"; Value = "Würth Elektronik"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "MP"; Value = "61300411121"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Package"; Value = "None"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "SnapEDA_Link"; Value = "https://www.snapeda.com/parts/61300411121/W%25C3%25BCrth+Elektronik+Midcom/view-part/?ref=snap"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = ""; VariantName = "[No Variations]"
+Add Pin To Net: Unknown Pin: Pin Data Pins-1
+Add Pin To Net: Unknown Pin: Pin Data Pins-2
+Added Pin To Net: NetName=NetADC_9 Pin=Display 1-01
+Added Pin To Net: NetName=NetADC_10 Pin=Display 1-02
+Added Pin To Net: NetName=GND Pin=Display 1-03
+Added Pin To Net: NetName=VCC Pin=Display 1-04
+Added Pin To Net: NetName=NetADC_9 Pin=Display 2-01
+Added Pin To Net: NetName=NetADC_10 Pin=Display 2-02
+Added Pin To Net: NetName=GND Pin=Display 2-03
+Added Pin To Net: NetName=VCC Pin=Display 2-04
+Added Pin To Net: NetName=NetADC_9 Pin=Display 3-01
+Added Pin To Net: NetName=NetADC_10 Pin=Display 3-02
+Added Pin To Net: NetName=GND Pin=Display 3-03
+Added Pin To Net: NetName=VCC Pin=Display 3-04
+Added Pin To Net: NetName=NetADC_9 Pin=Display 4-01
+Added Pin To Net: NetName=NetADC_10 Pin=Display 4-02
+Added Pin To Net: NetName=GND Pin=Display 4-03
+Added Pin To Net: NetName=VCC Pin=Display 4-04
+Added Member To Class: ClassName=Bop_It_Schematic Member=Component 4.7KOhm RMCF1210JT4K70
+Add Class Member: Failed to add class member : Component Data Pins M20-9990246
+Added Member To Class: ClassName=Bop_It_Schematic Member=Component Display 1 61300411121
+Added Member To Class: ClassName=Bop_It_Schematic Member=Component Display 2 61300411121
+Added Member To Class: ClassName=Bop_It_Schematic Member=Component Display 3 61300411121
+Added Member To Class: ClassName=Bop_It_Schematic Member=Component Display 4 61300411121

@@ -1,0 +1,57 @@
+Added Component: Designator=5.9KOhm(RES_ERJ3EKF5901V)
+Add component (AddParameter): Name = "Check_prices"; Value = "https://www.snapeda.com/parts/ERJ-3EKF5901V/Panasonic/view-part/?ref=eda"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "MF"; Value = "Panasonic"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "MP"; Value = "ERJ-3EKF5901V"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Package"; Value = "1608-2 Panasonic"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "SnapEDA_Link"; Value = "https://www.snapeda.com/parts/ERJ-3EKF5901V/Panasonic/view-part/?ref=snap"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = ""; VariantName = "[No Variations]"
+Added Component: Designator=10KOhm(RES_ERJ8ENF1002V)
+Add component (AddParameter): Name = "Availability"; Value = "Unavailable"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "MF"; Value = "{'manufacturer': u'Panasonic Electronic Components'}"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "MP"; Value = "ERJ8ENF1002V"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Package"; Value = "None"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Price"; Value = "None"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = ""; VariantName = "[No Variations]"
+Added Component: Designator=13KOhm(RES_ERJ8ENF1302V)
+Add component (AddParameter): Name = "Availability"; Value = "Unavailable"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "MF"; Value = ""; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "MP"; Value = "ERJ8ENF1302V"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Package"; Value = "None"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Price"; Value = "None"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = ""; VariantName = "[No Variations]"
+Added Component: Designator=800Ohm(RESC0402X15N)
+Add component (AddParameter): Name = "Digi-Key_Part_Number"; Value = "YAG6421CT-ND"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "MF"; Value = "Yageo"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Mouser-Purchase-URL"; Value = "https://snapeda.com/shop?store=Mouser&id=4176575"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "MP"; Value = "RC0100FR-07800RL"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Package"; Value = "0402 Samsung"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "SnapEDA_Link"; Value = "https://www.snapeda.com/parts/RC0100FR-07800RL/Yageo/view-part/4176575/?ref=snap"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = ""; VariantName = "[No Variations]"
+Add component: Footprint Not Found DGS0010A_N
+Add component: Footprint Not Found HARWIN_M20-9990246
+Add component: Footprint Not Found WURTH_61300411121
+Add component: Footprint Not Found WURTH_61300411121
+Add component: Footprint Not Found WURTH_61300411121
+Add component: Footprint Not Found WURTH_61300411121
+Added Pin To Net: NetName=1.3V Pin=13KOhm-2
+Added Net: Name=1.3V
+Added Pin To Net: NetName=2.3V Pin=800Ohm-2
+Added Net: Name=2.3V
+Added Pin To Net: NetName=3.3V Pin=5.9KOhm-1
+Added Pin To Net: NetName=3.3V Pin=10KOhm-2
+Added Net: Name=3.3V
+Added Net: Name=BLUE
+Added Net: Name=GND
+Added Net: Name=GREEN
+Added Pin To Net: NetName=Net5.9KOhm_2 Pin=5.9KOhm-2
+Added Pin To Net: NetName=Net5.9KOhm_2 Pin=800Ohm-1
+Added Net: Name=Net5.9KOhm_2
+Added Pin To Net: NetName=Net10KOhm_1 Pin=10KOhm-1
+Added Pin To Net: NetName=Net10KOhm_1 Pin=13KOhm-1
+Added Net: Name=Net10KOhm_1
+Added Net: Name=NetADC_9
+Added Net: Name=NetADC_10
+Added Net: Name=RED
+Added Class: Name=Bop_It_Schematic
+Added Rule: Name=Schematic Supply Nets
+Added Rule: Name=Schematic Supply Nets_1
