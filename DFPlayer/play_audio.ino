@@ -10,7 +10,7 @@ void setup() {
 
   myDFPlayer.begin(soft_serial);
   myDFPlayer.volume(25); // 0-30
-  myDFPlayer.play(1); // or whatever the wav file is named
+  myDFPlayer.play(1); // takes in 000#.mp3 files
 
   // put your setup code here, to run once:
 
