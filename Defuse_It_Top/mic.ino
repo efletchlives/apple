@@ -7,7 +7,7 @@
 // Variables
 int analogValue = 0;
 int digitalValue = 0;
-int threshold = 2000;  // Adjust based on your readings (0-4095 for ESP32)
+int threshold = 200;  // Adjust based on your readings (0-4095 for ESP32)
 
 void setup() {
   Serial.begin(115200);
