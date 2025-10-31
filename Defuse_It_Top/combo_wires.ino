@@ -5,14 +5,14 @@
 #include <Adafruit_SSD1306.h>
 
 #define OLED_RESET 4
-Adafruit_SSD1306 Display1(OLED_RESET);
-Adafruit_SSD1306 Display2(OLED_RESET);
+//Adafruit_SSD1306 Display1(OLED_RESET);
+//Adafruit_SSD1306 Display2(OLED_RESET);
 
-ADS1115 ADS(0x48);
+//ADS1115 ADS(0x48);
 
 
 RangedInt WIRE_RED(14000, 16000, 14800);   // on breadboard: BLACK
-RangedInt WIRE_GREEN(11500, 13000, 12000); // on breadboard: GREEN
+RangedInt WIRE_GREEN(7000, 9500, 8500); // on breadboard: GREEN
 RangedInt WIRE_YELLOW(16000, 18000, 16500); // on breadboard: YELLOW
 RangedInt expected_value;
 
@@ -55,7 +55,7 @@ void setupWires() {
   Display2.display();
 
   //Wire code
-  Wire.begin();
+  Wire.begin(8,9);
   ADS.begin();
   ADS.setGain(0);
   ADS.setDataRate(7);
@@ -64,7 +64,7 @@ void setupWires() {
 }
 
 
-void wiresLoop() {
+bool wiresLoop(int timer) {
     // pick combo to use
     int combo[3] = {-1,-1,-1}; // store current combo
     int combo_idx = -1; // store current combo idx
@@ -112,8 +112,11 @@ void wiresLoop() {
 
     // add time thing later (&& time < tmax)
     bool correct = false;
+    unsigned long startTime = millis();
+    unsigned long endTime;
     // check if wired correctly for a certain time
-    while(!correct){ // gets stuck in this loop
+
+    while((endTime-startTime) <= timer){ // gets stuck in this loop
       int readingA0 = ADS.readADC(0);
       Serial.println(readingA0);
       int readingA1 = ADS.readADC(1);
@@ -121,43 +124,63 @@ void wiresLoop() {
 
       if(combo[0] == 0 && combo[1] == 1 && combo[2] == 2){ // RED -> A0, GREEN -> A1, YELLOW -> A2
         if(WIRE_RED.isInRange(readingA0) && WIRE_GREEN.isInRange(readingA1) && WIRE_YELLOW.isInRange(readingA2)){
-          correct = true;
+          successScreen();
+          return correct = true;
         }
       }
       else if(combo[0] == 0 && combo[1] == 2 && combo[2] == 1){ // RED -> A0, YELLOW -> A1, GREEN -> A2
         if(WIRE_RED.isInRange(readingA0) && WIRE_YELLOW.isInRange(readingA1) && WIRE_GREEN.isInRange(readingA2)){
-          correct = true;
+          successScreen();
+          return correct = true;
         }
       }
       else if(combo[0] == 1 && combo[1] == 0 && combo[2] == 2){ // GREEN -> A0, RED -> A1, YELLOW -> A2
         if(WIRE_GREEN.isInRange(readingA0) && WIRE_RED.isInRange(readingA1) && WIRE_YELLOW.isInRange(readingA2)){
-          correct = true;
+          successScreen();
+          return correct = true;
         }
       }
       else if(combo[0] == 1 && combo[1] == 2 && combo[2] == 0){ // GREEN -> A0, YELLOW -> A1, RED -> A2
         if(WIRE_GREEN.isInRange(readingA0) && WIRE_YELLOW.isInRange(readingA1) && WIRE_RED.isInRange(readingA2)){
-          correct = true;
+          successScreen();
+          return correct = true;
         }
       }
       else if(combo[0] == 2 && combo[1] == 0 && combo[2] == 1){ // YELLOW -> A0, RED -> A1, GREEN -> A2
         if(WIRE_YELLOW.isInRange(readingA0) && WIRE_RED.isInRange(readingA1) && WIRE_GREEN.isInRange(readingA2)){
-          correct = true;
+          successScreen();
+          return correct = true;
         }
       }
       else{ // {3,2,1}: YELLOW -> A0, GREEN -> A1, RED -> A2
         if(WIRE_YELLOW.isInRange(readingA0) && WIRE_GREEN.isInRange(readingA1) && WIRE_RED.isInRange(readingA2)){
-          correct = true;
+          successScreen();
+          return correct = true;
         }
       }
+      endTime = millis();
     }
-    Display1.clearDisplay();
-    Display1.setCursor(0,0);
-    Display1.println("Good job!");
-    Display1.display();
-    delay(2000);
-    // while(true){} // infinite loop
+  objectiveFailScreen();
+  return correct = false;
 }
 
+void successScreen()
+{
+  Display1.clearDisplay();
+    Display1.setCursor(0,0);
+    Display1.println("OBJECTIVE SUCCESS");
+    Display1.display();
+    delay(2000);
+}
+
+void objectiveFailScreen()
+{
+  Display1.clearDisplay();
+    Display1.setCursor(0,0);
+    Display1.println("OBJECTIVE FAILED");
+    Display1.display();
+    delay(2000);
+}
 
 
 
