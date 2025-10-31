@@ -1,22 +1,23 @@
-#include <SoftwareSerial.h>
-#include <DFRobotDFPlayerMini.h>
+#include "DFRobotDFPlayerMini.h"
 
-SoftwareSerial soft_serial(10,11);
+// Define your chosen pins (you can use almost any GPIO)
+#define RXD2 18  // Connect to DFPlayer TX
+#define TXD2 17  // Connect to DFPlayer RX (through 1k resistor)
+
 DFRobotDFPlayerMini myDFPlayer;
 
 void setup() {
-  soft_serial.begin(9600);
-  Serial.begin(9600);
-
-  myDFPlayer.begin(soft_serial);
-  myDFPlayer.volume(25); // 0-30
-  myDFPlayer.play(1); // takes in 000#.mp3 files
-
-  // put your setup code here, to run once:
-
+  Serial.begin(115200);
+  
+  // Initialize Serial1 or Serial2 with custom pins
+  Serial1.begin(9600, SERIAL_8N1, RXD2, TXD2);
+  
+  myDFPlayer.begin(Serial1);
+  
+  myDFPlayer.volume(20);  // Set volume (0-30)
+  myDFPlayer.play(1);     // plays 000#.mp3
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
-
+  // Your code here
 }
