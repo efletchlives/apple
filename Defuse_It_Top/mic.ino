@@ -18,7 +18,7 @@ void setup() {
   delay(1000);
 }
 
-void loop() {
+void micLoop() {
   // Read analog value (0-4095 on ESP32)
   analogValue = analogRead(ANALOG_PIN);
   
@@ -26,18 +26,22 @@ void loop() {
   digitalValue = digitalRead(DIGITAL_PIN);
   
   // Print values
-  Serial.print("Analog: ");
-  Serial.print(analogValue);
-  Serial.print("\t|\tDigital: ");
-  Serial.print(digitalValue);
+  // Serial.print("Analog: ");
+  // Serial.print(analogValue);
+  // Serial.print("\t|\tDigital: ");
+  // Serial.print(digitalValue);
   
   // Check if sound detected
   if (digitalValue == HIGH) {
-    Serial.println("\t<-- SOUND DETECTED (Digital)");
+    // Serial.println("\t<-- SOUND DETECTED (Digital)");
+    return true;
   } else if (analogValue > threshold) {
-    Serial.println("\t<-- SOUND DETECTED (Analog)");
+    // Serial.println("\t<-- SOUND DETECTED (Analog)");
+    return true;
   } else {
-    Serial.println();
+    continue;
+    // once past certain time running, time out and return false
+    // Serial.println();
   }
   
   delay(100);  // Update every 100ms
