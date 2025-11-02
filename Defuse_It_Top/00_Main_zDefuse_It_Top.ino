@@ -5,7 +5,7 @@
 #include <Wire.h>
 #include "ADS1X15.h"
 
-#define OLED_RESET 4
+#define OLED_RESET -1
 Adafruit_SSD1306 Display1(OLED_RESET);
 Adafruit_SSD1306 Display2(OLED_RESET);
 ADS1115 ADS(0x48);
@@ -29,6 +29,7 @@ int score = 0;
 const int buttonPin = 2;
 State currentState = s0;
 bool actionSuccess = true;
+int max_score = 5;
 
 void setup() {
   pinMode(buttonPin, INPUT_PULLUP);
@@ -61,7 +62,7 @@ void actionChoice(double timer)
   //3: Mic
   int choice;
 
-  choice = random(1,4);
+  choice = 1; // random(1,4);
   Serial.print("action choice = ");
   Serial.println(choice);
 
@@ -83,23 +84,28 @@ void actionChoice(double timer)
 
 void startScreen()
 {
+  Display2.clearDisplay();
+  Display2.display();
+  score = 0;
+
   Display1.clearDisplay();
-  Display1.setTextSize(0.75);
-  Display1.setTextColor(WHITE, BLACK); 
+  Display1.setTextSize(1.5);
+  Display1.setTextColor(SSD1306_WHITE);
   Display1.setCursor(0,0);
-  Display1.println("DEFUSE-IT----PRESS BUTTON TO START");
+  Display1.println("      DEFUSE-IT");
+
+  Display1.setTextSize(1);
+  Display1.println("PRESS BUTTON TO START");
   Display1.display();
 }
 
 void winScreen()
 {
   Display1.clearDisplay();
-  Display1.setTextSize(0.75);
-  Display1.setTextColor(WHITE, BLACK); 
+  Display1.setTextSize(1.5);
+  Display1.setTextColor(SSD1306_WHITE); 
   Display1.setCursor(0,0);
-  Display1.println("BOMB DEFUSED");
-  Display1.setCursor(0,1);
-  Display1.println(score);
+  Display1.println("   BOMB DEFUSED");
   Display1.display();
   delay(2000);
 }
@@ -107,14 +113,39 @@ void winScreen()
 void failScreen()
 {
   Display1.clearDisplay();
-  Display1.setTextSize(0.75);
-  Display1.setTextColor(WHITE, BLACK); 
   Display1.setCursor(0,0);
   Display1.println("FAILED TO DEFUSE BOMB");
-  Display1.setCursor(0,1);
-  Display1.println(score);
   Display1.display();
   delay(2000);
+}
+
+void displays()
+{
+  if(actionSuccess == true){ // did task successfully
+    Display1.clearDisplay();
+    Display1.setCursor(0,0);
+    Display1.println("OBJECTIVE SUCCESS");
+    Display1.display();
+    delay(2000);
+
+    score++;
+    Display2.clearDisplay();
+    Display2.setTextSize(1.5);
+    Display2.setTextColor(SSD1306_WHITE);
+    Display2.setCursor(0,0);
+    Display2.println("score:");
+    Display2.setCursor(10,25);
+    Display2.println(score);
+    Display2.display();
+  }
+
+  else{ // failed to do task
+    Display1.clearDisplay();
+    Display1.setCursor(0,0);
+    Display1.println("OBJECTIVE FAILED");
+    Display1.display();
+    delay(2000);
+  }
 }
 
 
@@ -135,6 +166,7 @@ void loop()
       //call gameloop
       Serial.println("at state 1");
       actionChoice(timer);
+      displays();
       timer -= 71.43;
     
       break;
@@ -149,10 +181,11 @@ void loop()
       break;
   }
   nextState();
-  
-
 
 }
+
+
+
 
 // ----------STATE TRANSITIONS----------
 void nextState()
@@ -179,13 +212,13 @@ void nextState()
     }
 
     //if the action is successfull but the score is less than 99 then we stay in the game loop
-    else if((actionSuccess == true) && (score < 99))
+    else if((actionSuccess == true) && (score < max_score))
     {
       currentState = s1;
     }
 
     //if the last action was successfull and the score is 99 then the game is won
-    else if((actionSuccess == true) && (score == 99))
+    else if((actionSuccess == true) && (score == max_score))
     {
       currentState = s3;
     }
