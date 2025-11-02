@@ -71,15 +71,9 @@ bool keypadLoop(double timer) {
  
       if(numCount == 4){
           if(code == correctCode){
-            Display1.clearDisplay();
-            Display1.println(F("Good job!"));
-            Display1.display();
             return true;
           }
           else{
-            Display1.clearDisplay();
-            Display1.println(F("DIE DIE DIE"));
-            Display1.display();
             return false; // idk change to whatever correct and incorrect will be
           }
       }
