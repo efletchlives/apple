@@ -1,7 +1,7 @@
 // HW-484 Sound Sensor Test for ESP32-S3
 
 // Pin definitions
-#define ANALOG_PIN 1    // AO - Analog output (ADC1_CH0)
+#define ANALOG_PIN 1   // AO - Analog output (ADC1_CH0)
 #define DIGITAL_PIN 3   // DO - Digital output
 
 // Variables
@@ -27,7 +27,6 @@ bool micLoop(double timer) {
   Display1.setTextColor(SSD1306_WHITE);
   Display1.setCursor(10,25);
   Display1.println(F("PANIC"));
-  Display1.print(correctCode);
 
   Display1.display();
   
@@ -41,30 +40,26 @@ bool micLoop(double timer) {
     // Read digital value (HIGH when sound detected)
     digitalValue = digitalRead(DIGITAL_PIN);
     
-    // Print values
-    // Serial.print("Analog: ");
-    // Serial.print(analogValue);
+    //Print values
+    Serial.print("Analog: ");
+    Serial.print(analogValue);
+    Serial.println();
     // Serial.print("\t|\tDigital: ");
     // Serial.print(digitalValue);
     
     // Check if sound detected
-    if (digitalValue == HIGH) {
-      // Serial.println("\t<-- SOUND DETECTED (Digital)");
+    // if (digitalValue == HIGH) {
+    //   // Serial.println("\t<-- SOUND DETECTED (Digital)");
+    //   return true;
+    // } 
+    if (analogValue > threshold) {
+      Serial.println("\t<-- SOUND DETECTED (Analog)");
       return true;
     } 
-    else if (analogValue > threshold) {
-      // Serial.println("\t<-- SOUND DETECTED (Analog)");
-      return true;
-    } 
-    else {
-      currentTime = millis();
-      continue;
+    currentTime = millis();
       // once past certain time running, time out and return false
       // Serial.println();
-    }
-    
+    delay(100);  // Update every 100ms
   }
-  return false;
-  
-  delay(100);  // Update every 100ms
+  return false;  
 }
