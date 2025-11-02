@@ -16,7 +16,7 @@ char keys[rows][cols] = {
 };
 
 byte rowPins[rows] = {35,21,47,45};
-byte colPins[cols] = {0,36,46};
+byte colPins[cols] = {0,36,48};
 
 Keypad keypad = Keypad(makeKeymap(keys), rowPins, colPins, rows, cols);
 
@@ -29,21 +29,7 @@ void setupKeypad() {
   Wire.begin();
   Display1.begin(SSD1306_SWITCHCAPVCC, 0x3C);
 
-  Display1.clearDisplay();
-  Display1.setTextSize(1.5);
-  Display1.setTextColor(SSD1306_WHITE);
-  Display1.setCursor(10,25);
-  Display1.println(F("Enter 4-digit code: "));
-  Display1.print("       ");
-  Display1.print(correctCode);
 
-  Display1.display();
-
-
-
-  Serial.print("Enter 4-digit code ");
-  Serial.print(correctCode);
-  Serial.print(":\n");
 }
 
 bool keypadLoop(double timer) {
@@ -54,43 +40,51 @@ bool keypadLoop(double timer) {
   String num3 = String(random(0,9));
   String num4 = String(random(0,9));
   correctCode = num1 + num2 + num3 + num4;
+  Serial.println(correctCode);
+
+  Display1.clearDisplay();
+  Display1.setTextSize(1.5);
+  Display1.setTextColor(SSD1306_WHITE);
+  Display1.setCursor(0,0);
+  Display1.println(F("Enter 4-digit code: "));
+  Display1.print("       ");
+  Display1.print(correctCode);
+  Display1.display();
+
+
   int numCount = 0;
   String code = "";
   unsigned long startTime = millis();
-  unsigned long endTime;
+  unsigned long currentTime = startTime;
   
-    while(numCount <= 4 && (endTime-startTime) <= timer)
+    while(numCount <= 4 && (currentTime-startTime) <= timer)
+    {
+      char key = keypad.getKey();
+      if(key)
+      {
+        code += key;
+        numCount++;
+
+        Serial.print("Key pressed: ");
+        Serial.println(key);
+      }
+ 
       if(numCount == 4){
           if(code == correctCode){
             Display1.clearDisplay();
             Display1.println(F("Good job!"));
             Display1.display();
-            return false;
+            return true;
           }
           else{
             Display1.clearDisplay();
             Display1.println(F("DIE DIE DIE"));
             Display1.display();
-            return true; // idk change to whatever correct and incorrect will be
+            return false; // idk change to whatever correct and incorrect will be
           }
       }
-
-      char key = keypad.getKey();
-
-      //TEMP FOR DEBUGGING
-      if (key) { // if a key is pressed
-          Serial.print("You pressed: ");
-          Serial.println(key);
-
-          // Check if key is numeric (0-9)
-          if (key >= '0' && key <= '9') {
-          numCount++;
-          code += key;
-          Serial.print("Number count: ");
-          Serial.println(numCount);
-          }
-          endTime = millis();
-      }
+      currentTime = millis();
+    }
   return false;
 
 }
