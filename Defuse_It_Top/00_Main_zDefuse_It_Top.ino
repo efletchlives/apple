@@ -1,3 +1,6 @@
+#warning "Compiling combo_keypad.ino"
+#warning "Compiling combo_mic.ino"
+
 #include <Adafruit_SSD1306.h>
 #include <Wire.h>
 #include "ADS1X15.h"
@@ -16,16 +19,19 @@ enum State
   s3
 };
 
+bool keypadLoop(double timer);
+bool wiresLoop(double timer);
+bool micLoop(double timer);
+
 //Global Variable Initialization
 double timer = 10000;
-int lives;
-int score;
+int score = 0;
 const int buttonPin = 2;
 State currentState = s0;
-bool actionSuccess;
+bool actionSuccess = true;
 
 void setup() {
-  pinMode(buttonPin, INPUT);
+  pinMode(buttonPin, INPUT_PULLUP);
   Serial.begin(9600);
 
   //DISPLAY SETUP
@@ -43,12 +49,12 @@ void setup() {
   ADS.setGain(0);
   ADS.setDataRate(7);
   ADS.setMode(1);
-  randomSeed(analogRead(0));
+  randomSeed(esp_random());
 
 
 }
 
-void actionChoice(int timer)
+void actionChoice(double timer)
 {
   //1: keypad
   //2: Wires
@@ -56,6 +62,9 @@ void actionChoice(int timer)
   int choice;
 
   choice = random(1,4);
+  Serial.print("action choice = ");
+  Serial.println(choice);
+
 
   if(choice == 1)
   {
@@ -67,7 +76,7 @@ void actionChoice(int timer)
   }
   else if(choice == 3)
   {
-    //mic loop
+    actionSuccess = micLoop(timer);
   }
 }
 
@@ -75,18 +84,21 @@ void actionChoice(int timer)
 void startScreen()
 {
   Display1.clearDisplay();
+  Display1.setTextSize(0.75);
+  Display1.setTextColor(WHITE, BLACK); 
   Display1.setCursor(0,0);
   Display1.println("DEFUSE-IT----PRESS BUTTON TO START");
   Display1.display();
-  delay(2000);
 }
 
 void winScreen()
 {
   Display1.clearDisplay();
+  Display1.setTextSize(0.75);
+  Display1.setTextColor(WHITE, BLACK); 
   Display1.setCursor(0,0);
   Display1.println("BOMB DEFUSED");
-  Display1.setCursor(0,0);
+  Display1.setCursor(0,1);
   Display1.println(score);
   Display1.display();
   delay(2000);
@@ -95,9 +107,11 @@ void winScreen()
 void failScreen()
 {
   Display1.clearDisplay();
+  Display1.setTextSize(0.75);
+  Display1.setTextColor(WHITE, BLACK); 
   Display1.setCursor(0,0);
   Display1.println("FAILED TO DEFUSE BOMB");
-  Display1.setCursor(0,0);
+  Display1.setCursor(0,1);
   Display1.println(score);
   Display1.display();
   delay(2000);
@@ -106,30 +120,37 @@ void failScreen()
 
 void loop() 
 {
-   
+
+  actionSuccess = true;
+
   // ----------FSM BEHAVIOR----------
   switch(currentState)
   {
     case s0:  //STARTUP STATE
-      lives = 1;
-      score = 0;
-      //display lobby
+        Serial.println("at state 0");
+        startScreen();
       break;
+    
     case s1:  //GAME LOOP STATE
       //call gameloop
+      Serial.println("at state 1");
       actionChoice(timer);
+      timer -= 71.43;
     
       break;
     case s2:  //LOSE STATE
+      Serial.println("at state 2");
       failScreen();
+      
       break;
     case s3:  //WIN STATE
+      Serial.println("at state 3");
       winScreen();
       break;
   }
-
-  timer -= 71.43;
   nextState();
+  
+
 
 }
 
@@ -137,19 +158,22 @@ void loop()
 void nextState()
 {
   //stays in state 0 until button is pressed
-  if(currentState == s0) //START UP STATE
+  if (currentState == s0) //STATE UP STATE
   {
-    while(digitalRead(buttonPin) == LOW)
+
+    // If button is pressed (active LOW)
+    while(digitalRead(buttonPin) != LOW)
     {
       currentState = s0;
     }
+
     currentState = s1;
   }
 
   else if(currentState == s1) //GAME LOOP STATE
   {
-    //if there are zero lives left, the game is lost
-    if(lives == 0)
+    //if the action is failed
+    if(actionSuccess == false)
     {
       currentState = s2;
     }
@@ -177,43 +201,6 @@ void nextState()
     currentState = s0;
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
