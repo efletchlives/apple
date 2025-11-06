@@ -51,6 +51,8 @@ bool keypadLoop(double timer) {
   Display1.print(correctCode);
   Display1.display();
 
+  speaker.play(2); // keypad clip (siege typing) (this isn't working properly, it's playing 0005.mp3, not 0002.mp3)
+
 
   int numCount = 0;
   String code = "";
