@@ -68,6 +68,7 @@ bool wiresLoop(double timer) {
     // pick combo to use
     int combo[3] = {-1,-1,-1}; // store current combo
     int combo_idx = -1; // store current combo idx
+    speaker.play(3); // wires clip (peter defusing bomb song)
 
     if(prev_combo_idx == -1){  // if first iteration
       combo_idx = random(0,6);
