@@ -4,6 +4,12 @@
 #include <Adafruit_SSD1306.h>
 #include <Wire.h>
 #include "ADS1X15.h"
+#include "DFRobotDFPlayerMini.h"
+
+// for DFPlayer
+#define RXD2 18
+#define TXD2 17
+DFRobotDFPlayerMini speaker;
 
 #define OLED_RESET -1
 Adafruit_SSD1306 Display1(OLED_RESET);
@@ -24,12 +30,12 @@ bool wiresLoop(double timer);
 bool micLoop(double timer);
 
 //Global Variable Initialization
-double timer = 10000;
+double timer = 20000; // change to shorter time maybe
 int score = 0;
 const int buttonPin = 2;
 State currentState = s0;
 bool actionSuccess = true;
-int max_score = 5;
+int max_score = 99;
 
 void setup() {
   pinMode(buttonPin, INPUT_PULLUP);
@@ -51,6 +57,11 @@ void setup() {
   ADS.setDataRate(7);
   ADS.setMode(1);
   randomSeed(esp_random());
+
+  // DFPLAYER SETUP
+  Serial1.begin(9600, SERIAL_8N1, RXD2, TXD2);
+  speaker.begin(Serial1);
+  speaker.volume(10);
 
 
 }
@@ -97,6 +108,9 @@ void startScreen()
   Display1.setTextSize(1);
   Display1.println("PRESS BUTTON TO START");
   Display1.display();
+
+  speaker.play(1); // lobby clip
+  delay(10000);
 }
 
 void winScreen()
@@ -116,7 +130,9 @@ void failScreen()
   Display1.setCursor(0,0);
   Display1.println("FAILED TO DEFUSE BOMB");
   Display1.display();
-  delay(2000);
+  speaker.play(4); // lose clip
+  delay(10000);
+  
 }
 
 void displays()
