@@ -61,7 +61,7 @@ void setup() {
   // DFPLAYER SETUP
   Serial1.begin(9600, SERIAL_8N1, RXD2, TXD2);
   speaker.begin(Serial1);
-  speaker.volume(10);
+  speaker.volume(5);
 
 
 }
@@ -73,7 +73,7 @@ void actionChoice(double timer)
   //3: Mic
   int choice;
 
-  choice = 1; // random(1,4);
+  choice = random(1,4);
   Serial.print("action choice = ");
   Serial.println(choice);
 
@@ -109,12 +109,13 @@ void startScreen()
   Display1.println("PRESS BUTTON TO START");
   Display1.display();
 
-  speaker.play(1); // lobby clip
+  speaker.play(5); // lobby clip
   delay(10000);
 }
 
 void winScreen()
 {
+  Serial.println("success");
   Display1.clearDisplay();
   Display1.setTextSize(1.5);
   Display1.setTextColor(SSD1306_WHITE); 
@@ -126,6 +127,7 @@ void winScreen()
 
 void failScreen()
 {
+  Serial.println("failed");
   Display1.clearDisplay();
   Display1.setCursor(0,0);
   Display1.println("FAILED TO DEFUSE BOMB");
