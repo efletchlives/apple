@@ -10,10 +10,9 @@
 
 //ADS1115 ADS(0x48);
 
-
-RangedInt WIRE_RED(14000, 16000, 14800);   // on breadboard: BLACK
-RangedInt WIRE_GREEN(7000, 9500, 8500); // on breadboard: GREEN
-RangedInt WIRE_YELLOW(16000, 18000, 16500); // on breadboard: YELLOW
+RangedInt WIRE_GREEN(11000, 12000, 13000); // on breadboard: GREEN
+RangedInt WIRE_BLUE(6000, 7000, 8000);   // on breadboard: BLUE
+RangedInt WIRE_BLACK(16000, 17500, 19000); // on breadboard: BLACK
 RangedInt expected_value;
 
 // key: Red -> 0, Green -> 1, Yellow -> 2
@@ -98,15 +97,15 @@ bool wiresLoop(double timer) {
     Display1.println("Connect the wires");
 
     Display1.print(toString(combo[0]));
-    Display1.print(" -> A0");
+    Display1.print(" -> green");
     Display1.println();
 
     Display1.print(toString(combo[1]));
-    Display1.print(" -> A1");
+    Display1.print(" -> blue");
     Display1.println();
 
     Display1.print(toString(combo[2]));
-    Display1.print(" -> A2");
+    Display1.print(" -> black");
     Display1.println();
 
     Display1.display();
@@ -124,33 +123,33 @@ bool wiresLoop(double timer) {
       int readingA1 = ADS.readADC(1);
       int readingA2 = ADS.readADC(2);
 
-      if(combo[0] == 0 && combo[1] == 1 && combo[2] == 2){ // RED -> A0, GREEN -> A1, YELLOW -> A2
-        if(WIRE_RED.isInRange(readingA0) && WIRE_GREEN.isInRange(readingA1) && WIRE_YELLOW.isInRange(readingA2)){
+      if(combo[0] == 0 && combo[1] == 1 && combo[2] == 2){ // GREEN -> green, BLUE -> blue, BLACK -> black
+        if(WIRE_GREEN.isInRange(readingA0) && WIRE_BLUE.isInRange(readingA1) && WIRE_YELLOW.isInRange(readingA2)){
           return true;
         }
       }
-      else if(combo[0] == 0 && combo[1] == 2 && combo[2] == 1){ // RED -> A0, YELLOW -> A1, GREEN -> A2
-        if(WIRE_RED.isInRange(readingA0) && WIRE_YELLOW.isInRange(readingA1) && WIRE_GREEN.isInRange(readingA2)){
+      else if(combo[0] == 0 && combo[1] == 2 && combo[2] == 1){ // GREEN -> green, BLACK -> blue, BLUE -> black
+        if(WIRE_GREEN.isInRange(readingA0) && WIRE_BLACK.isInRange(readingA1) && WIRE_GREEN.isInRange(readingA2)){
           return true;
         }
       }
-      else if(combo[0] == 1 && combo[1] == 0 && combo[2] == 2){ // GREEN -> A0, RED -> A1, YELLOW -> A2
-        if(WIRE_GREEN.isInRange(readingA0) && WIRE_RED.isInRange(readingA1) && WIRE_YELLOW.isInRange(readingA2)){
+      else if(combo[0] == 1 && combo[1] == 0 && combo[2] == 2){ // BLUE -> green, GREEN -> blue, BLACK -> black
+        if(WIRE_BLUE.isInRange(readingA0) && WIRE_GREEN.isInRange(readingA1) && WIRE_YELLOW.isInRange(readingA2)){
           return true;
         }
       }
-      else if(combo[0] == 1 && combo[1] == 2 && combo[2] == 0){ // GREEN -> A0, YELLOW -> A1, RED -> A2
-        if(WIRE_GREEN.isInRange(readingA0) && WIRE_YELLOW.isInRange(readingA1) && WIRE_RED.isInRange(readingA2)){
+      else if(combo[0] == 1 && combo[1] == 2 && combo[2] == 0){ // BLUE -> green, BLACK -> blue, GREEN -> black
+        if(WIRE_BLUE.isInRange(readingA0) && WIRE_BLACK.isInRange(readingA1) && WIRE_RED.isInRange(readingA2)){
           return true;
         }
       }
-      else if(combo[0] == 2 && combo[1] == 0 && combo[2] == 1){ // YELLOW -> A0, RED -> A1, GREEN -> A2
-        if(WIRE_YELLOW.isInRange(readingA0) && WIRE_RED.isInRange(readingA1) && WIRE_GREEN.isInRange(readingA2)){
+      else if(combo[0] == 2 && combo[1] == 0 && combo[2] == 1){ // BLACK -> green, GREEN -> blue, BLUE -> black
+        if(WIRE_BLACK.isInRange(readingA0) && WIRE_GREEN.isInRange(readingA1) && WIRE_GREEN.isInRange(readingA2)){
           return true;
         }
       }
-      else{ // {3,2,1}: YELLOW -> A0, GREEN -> A1, RED -> A2
-        if(WIRE_YELLOW.isInRange(readingA0) && WIRE_GREEN.isInRange(readingA1) && WIRE_RED.isInRange(readingA2)){
+      else{ // {3,2,1}: BLACK -> green, BLUE -> blue, GREEN -> black
+        if(WIRE_BLACK.isInRange(readingA0) && WIRE_BLUE.isInRange(readingA1) && WIRE_RED.isInRange(readingA2)){
           return true;
         }
       }
