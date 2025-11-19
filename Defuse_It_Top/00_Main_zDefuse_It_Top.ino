@@ -30,9 +30,9 @@ enum State
 bool wire_in = 0; // 0 - wires out, 1 - wires in
 
 
-bool keypadLoop(double timer);
+bool keypadLoop(double timer,bool &wire_in);
 bool wiresLoop(double timer,bool &wire_in);
-bool micLoop(double timer);
+bool micLoop(double timer,bool &wire_in);
 
 //Global Variable Initialization
 double timer = 20000; // change to shorter time maybe
@@ -113,7 +113,7 @@ void actionChoice(double timer)
 
   if(choice == 1)
   {
-    actionSuccess = keypadLoop(timer);
+    actionSuccess = keypadLoop(timer,wire_in);
   }
   else if(choice == 2)
   {
@@ -121,7 +121,7 @@ void actionChoice(double timer)
   }
   else if(choice == 3)
   {
-    actionSuccess = micLoop(timer);
+    actionSuccess = micLoop(timer,wire_in);
   }
 }
 
