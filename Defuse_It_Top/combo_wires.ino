@@ -13,7 +13,7 @@
 RangedInt WIRE_GREEN(10000, 14000, 12000); // on breadboard: GREEN
 RangedInt WIRE_BLUE(5000, 9000, 7000);   // on breadboard: BLUE
 RangedInt WIRE_BLACK(15000, 20000, 17500); // on breadboard: BLACK
-RangedInt WIRE_VOID(1000, 4500, 3200); // void/open wires
+extern RangedInt WIRE_VOID(1000, 4500, 3200); // void/open wires
 RangedInt expected_value;
 
 // key: Green -> 0, Blue -> 1, Black -> 2
@@ -49,10 +49,6 @@ void setupWires() {
   Display1.begin(SSD1306_SWITCHCAPVCC, 0x3C);
   Display1.clearDisplay();
   Display1.display();
-
-  Display2.begin(SSD1306_SWITCHCAPVCC, 0x3D);
-  Display2.clearDisplay();
-  Display2.display();
 
   //Wire code
   Wire.begin(8,9);
