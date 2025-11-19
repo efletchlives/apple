@@ -1,26 +1,26 @@
-#include <Keypad.h>
+// #include <Keypad.h>
 #include <Adafruit_SSD1306.h>
 #include <Wire.h>
 
 #define OLED_RESET 4
 //Adafruit_SSD1306 Display1(128,64,&Wire,OLED_RESET);
 
-String correctCode;
-const byte rows = 4;
-const byte cols = 3;
-char keys[rows][cols] = {
-    {'1','2','3'},
-    {'4','5','6'},
-    {'7','8','9'},
-    {'*','0','#'}
-};
+// String correctCode;
+// const byte rows = 4;
+// const byte cols = 3;
+// char keys[rows][cols] = {
+//     {'1','2','3'},
+//     {'4','5','6'},
+//     {'7','8','9'},
+//     {'*','0','#'}
+// };
 
-byte rowPins[rows] = {35,21,47,45};
-byte colPins[cols] = {0,36,48};
+// byte rowPins[rows] = {45,19,20,47};
+// byte colPins[cols] = {48,0,21};
 
-Keypad keypad = Keypad(makeKeymap(keys), rowPins, colPins, rows, cols);
+// Keypad keypad = Keypad(makeKeymap(keys), rowPins, colPins, rows, cols);
 
-String enteredCode = "";
+// String enteredCode = "";
 
 
 
@@ -33,7 +33,6 @@ void setupKeypad() {
 }
 
 bool keypadLoop(double timer) {
-
   // random keypad code
   String num1 = String(random(0,9));
   String num2 = String(random(0,9));
@@ -61,6 +60,10 @@ bool keypadLoop(double timer) {
   
     while(numCount <= 4 && (currentTime-startTime) <= timer)
     {
+      // check for wrong input
+      // if wires values change 
+      // if mic goes above threshold
+
       char key = keypad.getKey();
       if(key)
       {
