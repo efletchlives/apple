@@ -3,6 +3,7 @@
 
 #include <Adafruit_SSD1306.h>
 #include <Wire.h>
+#include <Keypad.h>
 #include "ADS1X15.h"
 #include "DFRobotDFPlayerMini.h"
 
@@ -25,8 +26,12 @@ enum State
   s3
 };
 
+// wires
+bool wire_in = 0; // 0 - wires out, 1 - wires in
+
+
 bool keypadLoop(double timer);
-bool wiresLoop(double timer);
+bool wiresLoop(double timer,bool &wire_in);
 bool micLoop(double timer);
 
 //Global Variable Initialization
@@ -36,6 +41,34 @@ const int buttonPin = 2;
 State currentState = s0;
 bool actionSuccess = true;
 int max_score = 99;
+
+// keypad
+String correctCode;
+const byte rows = 4;
+const byte cols = 3;
+char keys[rows][cols] = {
+    {'1','2','3'},
+    {'4','5','6'},
+    {'7','8','9'},
+    {'*','0','#'}
+};
+byte rowPins[rows] = {45,19,20,47};
+byte colPins[cols] = {48,0,21};
+
+Keypad keypad = Keypad(makeKeymap(keys), rowPins, colPins, rows, cols);
+String enteredCode = "";
+
+
+// mic
+// Pin definitions
+#define ANALOG_PIN 2   // AO - Analog output (ADC1_CH0)
+#define DIGITAL_PIN 42   // DO - Digital output
+
+// Variables
+int analogValue = 0;
+int digitalValue = 0;
+int threshold = 3500;  // Adjust based on your readings (0-4095 for ESP32)
+
 
 void setup() {
   pinMode(buttonPin, INPUT_PULLUP);
@@ -51,7 +84,7 @@ void setup() {
   Display2.display();
 
   //WIRE SETUP
-  Wire.begin();
+  Wire.begin(8,9);
   ADS.begin();
   ADS.setGain(0);
   ADS.setDataRate(7);
@@ -61,7 +94,7 @@ void setup() {
   // DFPLAYER SETUP
   Serial1.begin(9600, SERIAL_8N1, RXD2, TXD2);
   speaker.begin(Serial1);
-  speaker.volume(5);
+  speaker.volume(7); // turn up later
 
 
 }
@@ -84,14 +117,13 @@ void actionChoice(double timer)
   }
   else if(choice == 2)
   {
-    actionSuccess = wiresLoop(timer);
+    actionSuccess = wiresLoop(timer,wire_in);
   }
   else if(choice == 3)
   {
     actionSuccess = micLoop(timer);
   }
 }
-
 
 void startScreen()
 {
@@ -110,7 +142,7 @@ void startScreen()
   Display1.display();
 
   speaker.play(5); // lobby clip
-  delay(10000);
+  //delay(10000);
 }
 
 void winScreen()
