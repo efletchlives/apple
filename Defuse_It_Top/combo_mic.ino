@@ -1,13 +1,13 @@
 // HW-484 Sound Sensor Test for ESP32-S3
 
-// Pin definitions
-#define ANALOG_PIN 1   // AO - Analog output (ADC1_CH0)
-#define DIGITAL_PIN 3   // DO - Digital output
+// // Pin definitions
+// #define ANALOG_PIN 2   // AO - Analog output (ADC1_CH0)
+// #define DIGITAL_PIN 42   // DO - Digital output
 
-// Variables
-int analogValue = 0;
-int digitalValue = 0;
-int threshold = 200;  // Adjust based on your readings (0-4095 for ESP32)
+// // Variables
+// int analogValue = 0;
+// int digitalValue = 0;
+// int threshold = 3500;  // Adjust based on your readings (0-4095 for ESP32)
 
 void micSetup() {
   Serial.begin(115200);
@@ -15,9 +15,10 @@ void micSetup() {
   // Configure pins
   pinMode(DIGITAL_PIN, INPUT);
   pinMode(ANALOG_PIN, INPUT);
+
+  analogReadResolution(12);
+  analogSetAttenuation(ADC_11db);
   delay(1000);
-
-
 }
 
 bool micLoop(double timer) {
@@ -34,6 +35,11 @@ bool micLoop(double timer) {
   unsigned long currentTime = startTime;
   while((currentTime-startTime) <= timer)
   {
+    // check for wrong input
+    // if wires values change 
+    // if key is pressed on keypad
+
+    
     // Read analog value (0-4095 on ESP32)
     analogValue = analogRead(ANALOG_PIN);
     
