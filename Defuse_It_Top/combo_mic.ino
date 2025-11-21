@@ -35,6 +35,7 @@ bool micLoop(double timer,bool &wire_in) {
   Display1.println(F("PANIC"));
 
   Display1.display();
+  speaker.play(4); // mic panic clip
   
   unsigned long startTime = millis();
   unsigned long currentTime = startTime;
@@ -42,14 +43,14 @@ bool micLoop(double timer,bool &wire_in) {
   {
     // check for wrong input
     // if wires values change 
-     ADS.readADC(0);
-      int16_t readingA0 = ADS.getValue();
-       ADS.readADC(1);
-      int16_t readingA1 = ADS.getValue();
-       ADS.readADC(2);
-      int16_t readingA2 = ADS.getValue();
-          //First check if wires are in 
-            //No wires are in 
+    ADS.readADC(0);
+    int16_t readingA0 = ADS.getValue();
+    ADS.readADC(1);
+    int16_t readingA1 = ADS.getValue();
+    ADS.readADC(2);
+    int16_t readingA2 = ADS.getValue();
+    //First check if wires are in 
+      //No wires are in 
           if(wire_in == 0)
           {
             //Checks if any wires get plugged in
@@ -77,22 +78,7 @@ bool micLoop(double timer,bool &wire_in) {
     
     // Read analog value (0-4095 on ESP32)
     analogValue = analogRead(ANALOG_PIN);
-    
-    // Read digital value (HIGH when sound detected)
-    digitalValue = digitalRead(DIGITAL_PIN);
-    
-    //Print values
-    Serial.print("Analog: ");
-    Serial.print(analogValue);
-    Serial.println();
-     Serial.print("\t|\tDigital: ");
-     Serial.print(digitalValue);
-    
-    // Check if sound detected
-    // if (digitalValue == HIGH) {
-    //   // Serial.println("\t<-- SOUND DETECTED (Digital)");
-    //   return true;
-    // } 
+
     if (analogValue > threshold) {
       Serial.println("\t<-- SOUND DETECTED (Analog)");
       return true;
